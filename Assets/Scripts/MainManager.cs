@@ -9,6 +9,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text BestScrore;
     public GameObject GameOverText;
 
     private bool m_Started = false;
@@ -33,6 +34,15 @@ public class MainManager : MonoBehaviour
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
             }
+        }
+
+        if(GameMange.Instant.highScore <= 0)
+        {
+            BestScrore.text = "No one have best score";
+        }
+        else
+        {
+            BestScrore.text = "Best score of " + GameMange.Instant.highScoreName + " : " + GameMange.Instant.highScore;
         }
     }
 
@@ -70,5 +80,12 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        if(m_Points > GameMange.Instant.highScore)
+        {
+            GameMange.Instant.highScore = m_Points;
+            GameMange.Instant.highScoreName = GameMange.Instant.name;
+            GameMange.Instant.Save();
+        }
     }
 }
